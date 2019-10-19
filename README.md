@@ -11,3 +11,5 @@ A web app to help you find your interests..
 * Push your branch to Github like so: `git push -u origin $branch_name`. Where `branch_name` is your Github username. 
 
 Work on your branch, make all your changes and commit them. Whenever you're ready to push your changes, open a pull request. Your pull request will be reviewed if all is fine and merged into the master branch. 
+
+Information on best practices can be found [here](./BEST_PRACTICES.md)
