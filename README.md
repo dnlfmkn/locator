@@ -1,5 +1,5 @@
 # locator 🔎
-A web app to help you find your interests
+A web app to help you find your interests..
 
 ## How to contribute
 **_Please read this carefully_**. If you are new to this repo and would like to contribute, do the following:
