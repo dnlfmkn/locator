@@ -10,28 +10,26 @@ const activities = [
 
 class Home extends Component {
     constructor(props) {
-      super(props);
-      this.state = {activities: this.props.activities}
-		}
-		
-		handleClick = (activity) => {
-			console.log(activity);
-		}
+        super(props);
+        this.state = { activities: this.props.activities }
+    }
+
+    handleClick = (activity) => {
+        console.log(activity);
+    }
 
     renderActivities = (activities) => {
-      if (!activities) { return [] }
-      else {
-        return activities.map((activity) => {
-					return <Activity title={activity} onClick={this.handleClick}/>
-				})
-      }
+        if (!activities) { return [] }
+        else {
+            return activities.map((activity) => {
+                return <Activity title={activity} onClick={this.handleClick} />
+            })
+        }
     }
 
     render() {
-        return(
-         <div>
-					 {/*TODO*/}
-        </div>
-				);
+        return (
+            <div>{/*TODO*/}</div>
+        );
     }
 }
