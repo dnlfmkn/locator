@@ -12,26 +12,24 @@ class Home extends Component {
     constructor(props) {
       super(props);
       this.state = {activities: this.props.activities}
-		}
+	}
 		
-		handleClick = (activity) => {
-			console.log(activity);
-		}
+	handleClick = (activity) => {
+		console.log(activity);
+	}
 
     renderActivities = (activities) => {
       if (!activities) { return [] }
       else {
         return activities.map((activity) => {
-					return <Activity title={activity} onClick={this.handleClick}/>
-				})
+			return <Activity title={activity} onClick={this.handleClick}/>
+		})
       }
     }
 
     render() {
         return(
-         <div>
-					 {/*TODO*/}
-        </div>
-				);
+         <div>{/*TODO*/}</div>
+		);
     }
 }
