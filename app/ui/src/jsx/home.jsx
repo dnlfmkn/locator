@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import Activity from './activity';
-
-const activities = [
-    'Golf',
-    'Parks',
-    'Karaoke',
-    'Sports',
-];
+import APIClient from '../api';
+import '../styles/style.css'
 
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = { activities: this.props.activities }
+        this.state = { activities: [] }
+    }
+
+    async componentDidMount() {
+        this.apiClient = new APIClient();
+        this.apiClient.getActivities().
+            then((data) => {
+                this.setState({ ...this.state, activities: data })
+            });
     }
 
     handleClick = (activity) => {
@@ -22,14 +25,21 @@ class Home extends Component {
         if (!activities) { return [] }
         else {
             return activities.map((activity) => {
-                return <Activity title={activity} onClick={this.handleClick} />
+                return <Activity title={activity} handleClick={this.handleClick} />
             })
         }
     }
 
     render() {
         return (
-            <div>{/*TODO*/}</div>
+            <div>
+                <header id="app-header">
+                    <span>locator</span>
+                </header>
+                <div id="pill-container">
+                    {this.renderActivities(this.state.activities)}
+                </div>
+            </div>
         );
     }
 }
