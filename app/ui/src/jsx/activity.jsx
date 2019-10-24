@@ -12,7 +12,7 @@ class Activity extends React.Component {
 
     render() {
       return(
-       <button id="pill" onClick={this.handleClick}>
+       <button className="pill" onClick={() => this.handleClick()}>
          {this.props.title}
        </button>
       );

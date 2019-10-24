@@ -1,7 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+#app-header {
+  background-color: antiquewhite;
+  flex-direction: row;
+  align-items: center;
+  min-height: 20%;
+  display: flex;
+  color: grey;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+}
+
 /* pill */
-#pill {
-  z-index: 100;
-  position: fixed;
+.pill {
   border: 1mm;
   color: black;
   padding: 10px 15px;
@@ -9,4 +19,17 @@
   background-color: antiquewhite;
   border-radius: 18px;
   cursor: pointer;
+}
+
+/* pill container */
+#pill-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-evenly;
+  justify-content: space-around;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  bottom: 20%;
+  right: 20%;
 }
