@@ -4,44 +4,44 @@ import APIClient from '../api';
 import '../styles/style.css'
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { activities: [] }
-    }
+  constructor(props) {
+    super(props);
+    this.state = { activities: [] }
+  }
 
-    async componentDidMount() {
-        this.apiClient = new APIClient();
-        this.apiClient.getActivities().
-            then((data) => {
-                this.setState({ ...this.state, activities: data })
-            });
-    }
+  async componentDidMount() {
+    this.apiClient = new APIClient();
+    this.apiClient.getActivities().
+      then((data) => {
+        this.setState({ ...this.state, activities: data })
+      });
+  }
 
-    handleClick = (activity) => {
-        console.log(activity);
-    }
+  handleClick = (activity) => {
+    console.log(activity);
+  }
 
-    renderActivities = (activities) => {
-        if (!activities) { return [] }
-        else {
-            return activities.map((activity) => {
-                return <Activity title={activity} handleClick={this.handleClick} />
-            })
-        }
+  renderActivities = (activities) => {
+    if (!activities) { return [] }
+    else {
+      return activities.map((activity) => {
+        return <Activity title={activity} handleClick={this.handleClick} />
+      })
     }
+  }
 
-    render() {
-        return (
-            <div>
-                <header id="app-header">
-                    <span>locator</span>
-                </header>
-                <div id="pill-container">
-                    {this.renderActivities(this.state.activities)}
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <header id="app-header">
+          <span>locator</span>
+        </header>
+        <div id="pill-container">
+          {this.renderActivities(this.state.activities)}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Home;
