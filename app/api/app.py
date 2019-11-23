@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import pyrebase # for working with Firebase
 
 app = Flask(__name__)
 CORS(app)
@@ -26,6 +27,16 @@ def home():
         "Dance",
     ]
     return jsonify(activities)
+
+@app.route("/<activity>", methods=['GET'])
+def get_locations(activity):
+    
+@app.route("/bookmarks", methods=["GET"])
+def bookmarks():
+
+@app.route("/<activity>/<int:location_id>", methods=['PUT'])
+def add_bookmark(location_id):
+
 
 
 if __name__ == "__main__":
