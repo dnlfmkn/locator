@@ -1,11 +1,11 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-import pyrebase # for working with Firebase
+#import pyrebase # for working with Firebase
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-@app.route("/", methods=['GET'])
+@app.route("/api", methods=['GET'])
 def home():
     activities = [
         "Golf",
@@ -30,13 +30,13 @@ def home():
 
 @app.route("/<activity>", methods=['GET'])
 def get_locations(activity):
-    
+    return
 @app.route("/bookmarks", methods=["GET"])
 def bookmarks():
-
+    return
 @app.route("/<activity>/<int:location_id>", methods=['PUT'])
 def add_bookmark(location_id):
-
+    return
 
 
 if __name__ == "__main__":

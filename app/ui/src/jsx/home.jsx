@@ -18,16 +18,14 @@ class Home extends Component {
   }
 
   handleClick = (activity) => {
-    console.log(activity);
+    this.apiClient.getLocations(activity)
   }
 
   renderActivities = (activities) => {
     if (!activities) { return [] }
-    else {
-      return activities.map((activity) => {
-        return <Activity title={activity} handleClick={this.handleClick} />
-      })
-    }
+    return activities.map((activity) => {
+      return <Activity title={activity} handleClick={this.handleClick} />
+    })
   }
 
   render() {
