@@ -3,17 +3,27 @@ import axios from 'axios';
 /*
 This class will handle all API calls to the Flask backend
 */
+const BASE_URL = 'http://localhost:5000'
 
 class APIClient {
   async getActivities() {
     try {
-      const response = await axios.get('/', {
-        baseURL: 'http://localhost:5000'
-      });
+      const response = await axios.get(`${BASE_URL}/api`);
+      console.log(response.data)
       return response.data;
     }
     catch (error) {
       console.log(error); // debug
+    }
+  }
+
+  async getLocations(activity) {
+    try {
+      const response = await axios.get(`${BASE_URL}/${activity}`, BASE_URL);
+      return response.data;
+    }
+    catch (error) {
+      console.log(error);
     }
   }
 }
