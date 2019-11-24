@@ -12,13 +12,14 @@ class APIClient {
       return response.data;
     }
     catch (error) {
+      //TODO: Catch error and display meaningful error page
       console.log(error); // debug
     }
   }
 
   async getLocations(activity) {
     try {
-      const response = await axios.get(`${BASE_URL}/api/${activity}`, BASE_URL);
+      const response = await axios.get(`${BASE_URL}/api/${activity}`);
       return response.data;
     }
     catch (error) {
