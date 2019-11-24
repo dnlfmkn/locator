@@ -91,6 +91,11 @@
   color: grey;
   padding: 5px;
   margin: 10px;
+  cursor: pointer;
+}
+
+.card button:focus {
+  outline: 0;
 }
 
 /* location card list */
@@ -98,4 +103,16 @@
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+}
+
+.navbar {
+
+}
+
+.tabs {
+
+}
+
+.tab {
+  
 }

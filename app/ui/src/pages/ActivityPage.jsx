@@ -17,8 +17,8 @@ export default function ActivityPage(props) {
    */
   useEffect(() => {
     const fetchLocations = async () => {
-      console.log(props.match.params.activity)
-      const locations = await apiClient.getLocations(props.match.params.activity)
+      const locations = await apiClient
+        .getLocations(props.match.params.activity)
       setLocations(locations)
     }
     fetchLocations()
