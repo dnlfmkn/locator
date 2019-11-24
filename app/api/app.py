@@ -30,11 +30,12 @@ def home():
     ]
     return jsonify(activities)
 
+""" Fetches locations for an activity with the help of Places API
+    params: activity
+"""
 @app.route("/api/<activity>", methods=['GET'])
-''' Fetches locations for an activity with the help of Places API
-    params: activity'''
 def get_locations(activity):
-    return
+    return jsonify(['lol'])
 
 # Fetches a user's bookmarks bookmarks
 @app.route("/bookmarks", methods=["GET"])
@@ -45,6 +46,9 @@ def bookmarks():
 def add_bookmark(location_id):
     return
 
+@app.route("/<activity>/<int:location_id>", methods=['DELETE'])
+def delete_bookmark(location_id):
+    return
 
 if __name__ == "__main__":
     app.run(debug=True)
