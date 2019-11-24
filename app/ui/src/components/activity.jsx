@@ -6,12 +6,12 @@ import '../styles/style.css'
  */
 export default function Activity(props) {
     const handleClick = () => {
-      props.handleClick(this.props.title);
+      props.handleClick(props.title);
     }
 
     return(
       <button className="pill" onClick={() => handleClick()}>
-        {this.props.title}
+        {props.title}
       </button>
     );
 }
