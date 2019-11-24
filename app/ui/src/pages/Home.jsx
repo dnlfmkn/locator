@@ -16,8 +16,8 @@ class Home extends Component {
 
   async componentDidMount() {
     this.apiClient = new APIClient();
-    this.apiClient.getActivities().
-      then((data) => {
+    this.apiClient.getActivities()
+      .then((data) => {
         this.setState({ ...this.state, activities: data })
       });
   }
