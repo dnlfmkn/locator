@@ -7,6 +7,8 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route("/api", methods=['GET'])
 def home():
+    # TODO: Put data in key:value pairs of concise name to canonical 
+    # name to make fetching results using Places API easier
     activities = [
         "Golf",
         "Swim",
@@ -29,11 +31,16 @@ def home():
     return jsonify(activities)
 
 @app.route("/api/<activity>", methods=['GET'])
+''' Fetches locations for an activity with the help of Places API
+    params: activity'''
 def get_locations(activity):
     return
+
+# Fetches a user's bookmarks bookmarks
 @app.route("/bookmarks", methods=["GET"])
 def bookmarks():
     return
+
 @app.route("/<activity>/<int:location_id>", methods=['PUT'])
 def add_bookmark(location_id):
     return

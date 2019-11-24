@@ -1,6 +1,9 @@
 import React from 'react';
 import '../styles/style.css'
 
+/**
+ * Component representing an activity. Very basic/no frills
+ */
 class Activity extends React.Component {
     constructor(props) {
       super(props);
