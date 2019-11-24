@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import APIClient from '../api';
 
 /**
@@ -10,25 +10,39 @@ import APIClient from '../api';
  * @param {*} props 
  */
 export default function Location(props) {
+  const [isBookmarked, setIsBookmarked] = useState(props.isBookmarked);
+  const initialMount = useRef(true);
+
   const apiClient = new APIClient();
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const locationId = props.locationId;
   const activity = props.activity;
 
   useEffect(() => {
-    const updateBookmarks = async () => {
-      const result;
-      if (isBookmarked) {
-        result = await apiClient.addBookmark(activity, locationId);
-      } else {
-        result = await apiClient.deleteBookmark(activity, locationId);
+    const bookmark = async () => {
+        var result;
+        // prevent hook from running on initial load
+        if (initialMount.current) {
+          initialMount.current = false;
+          return;
+        }
+        if (!isBookmarked) {
+          result = await apiClient.addBookmark(activity, locationId);
+        } else {
+          result = await apiClient.deleteBookmark(activity, locationId);
+        }
+        setIsBookmarked(result);
       }
-      setIsBookmarked(result);
-    }
-    updateBookmarks();
+      bookmark();
   }, [isBookmarked]);
 
-  return <article>
-
+  return <article class="card">
+    <img src={props.imageUrl} alt=""/>
+    <div class="info">
+      <h2 class="title">{props.title}</h2>
+      <p class="distance">{props.distance}</p>
+    </div>
+    <button class="bookmark" onClick={() => setIsBookmarked(!isBookmarked)}>
+      {isBookmarked ? 'Bookmarked' : 'Bookmark'}
+    </button>
   </article>;
 }

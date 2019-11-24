@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import APIClient from '../api'
+import Location from '../components/location';
 
 /**
  * Functional component rendering locations where an 
@@ -7,12 +8,8 @@ import APIClient from '../api'
  * @param {*} props 
  */
 export default function ActivityPage(props) {
-  const initialState = {
-    locations: {},
-  }
-
   const apiClient = new APIClient();
-  const [locations, setLocations] = useState(initialState);
+  const [locations, setLocations] = useState([]);
   
   /**
    * Alternative to @function componentDidMount
@@ -27,5 +24,21 @@ export default function ActivityPage(props) {
     fetchLocations()
   }, []);
 
-  return <div></div>;
+  const renderLocations = (locations) => {
+    if (!locations) { return []; }
+    return locations.map((location) => {
+      return <Location
+       key={location.location_id}
+       activity={props.match.params.activity}
+       title={location.title}
+       imageUrl={location.img_url}
+       distance={location.distance}
+       locationId={location.location_id}
+       isBookmarked={location.bookmarked}/>
+    });
+  }
+
+return <div class="cards">
+  {renderLocations(locations)}
+</div>;
 }

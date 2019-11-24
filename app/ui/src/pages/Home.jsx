@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Activity from '../components/activity';
 import APIClient from '../api';
 import '../styles/style.css'
