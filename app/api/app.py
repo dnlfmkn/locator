@@ -28,7 +28,7 @@ def home():
     ]
     return jsonify(activities)
 
-@app.route("/<activity>", methods=['GET'])
+@app.route("/api/<activity>", methods=['GET'])
 def get_locations(activity):
     return
 @app.route("/bookmarks", methods=["GET"])

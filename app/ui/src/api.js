@@ -9,7 +9,6 @@ class APIClient {
   async getActivities() {
     try {
       const response = await axios.get(`${BASE_URL}/api`);
-      console.log(response.data)
       return response.data;
     }
     catch (error) {
@@ -19,7 +18,7 @@ class APIClient {
 
   async getLocations(activity) {
     try {
-      const response = await axios.get(`${BASE_URL}/${activity}`, BASE_URL);
+      const response = await axios.get(`${BASE_URL}/api/${activity}`, BASE_URL);
       return response.data;
     }
     catch (error) {
