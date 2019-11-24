@@ -38,7 +38,7 @@ def home():
 """
 @app.route("/api/<activity>", methods=['GET'])
 def get_locations(activity):
-    # dummpy response
+    # dummy response
     return to_json([{
         "location_id": 1,
         "img_url": 'https://lh5.googleusercontent.com/p/AF1QipNxDeRVJrbay1xANFPPa_SQhng28RQDvsDWhcz3=w408-h305-k-no',

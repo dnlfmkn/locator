@@ -28,17 +28,17 @@ export default function ActivityPage(props) {
     if (!locations) { return []; }
     return locations.map((location) => {
       return <Location
-       key={location.location_id}
+       key={location['location_id']}
        activity={props.match.params.activity}
-       title={location.title}
-       imageUrl={location.img_url}
-       distance={location.distance}
-       locationId={location.location_id}
-       isBookmarked={location.bookmarked}/>
+       title={location['title']}
+       imageUrl={location['img_url']}
+       distance={location['distance']}
+       locationId={location['location_id']}
+       isBookmarked={location['bookmarked']}/>
     });
   }
 
-return <div class="cards">
+return <div className="cards">
   {renderLocations(locations)}
 </div>;
 }

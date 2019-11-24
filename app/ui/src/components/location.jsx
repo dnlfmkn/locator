@@ -35,13 +35,13 @@ export default function Location(props) {
       bookmark();
   }, [isBookmarked]);
 
-  return <article class="card">
+  return <article className="card">
     <img src={props.imageUrl} alt=""/>
-    <div class="info">
-      <h2 class="title">{props.title}</h2>
-      <p class="distance">{props.distance}</p>
+    <div className="info">
+      <h2 className="title">{props.title}</h2>
+      <p className="distance">{props.distance}</p>
     </div>
-    <button class="bookmark" onClick={() => setIsBookmarked(!isBookmarked)}>
+    <button className="bookmark" onClick={() => setIsBookmarked(!isBookmarked)}>
       {isBookmarked ? 'Bookmarked' : 'Bookmark'}
     </button>
   </article>;
