@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import './index.css';
 import Home from './pages/Home';
 import ActivityPage from './pages/ActivityPage';
+import Bookmarks from './pages/Bookmarks';
 
 const history = createBrowserHistory();
 ReactDOM.render(
@@ -13,5 +14,6 @@ ReactDOM.render(
         <Switch>
             <Route exact path='/' component={Home}/>
             <Route path='/activity/:activity' component={ActivityPage}/>
+            <Route path='/bookmarks' component={Bookmarks}/>
         </Switch>
     </Router>, document.getElementById('root'));
