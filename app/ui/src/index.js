@@ -14,7 +14,7 @@ const history = createBrowserHistory();
 ReactDOM.render(
     <ThemeProvider>
         <Router history={history}>
-        <NavBar appName={"locator"}/>
+        <NavBar history={history} appName={"locator"}/>
             <Switch>
                 <Route exact path='/' component={Home}/>
                 <Route path='/activity/:activity' component={ActivityPage}/>

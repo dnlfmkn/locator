@@ -2,6 +2,10 @@ import React from 'react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import theme from './theme';
 
+/**
+ * Theme Context provider for entire app.
+ * Allows for consistent theming across the app
+ */
 const defaultContextData = {
   dark: false,
   toggle: () => {}
