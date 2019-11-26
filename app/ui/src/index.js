@@ -12,13 +12,14 @@ import NavBar from './components/navbar';
 
 const history = createBrowserHistory();
 ReactDOM.render(
-    <ThemeProvider>
-        <Router history={history}>
-        <NavBar history={history} appName={"locator"}/>
-            <Switch>
-                <Route exact path='/' component={Home}/>
-                <Route path='/activity/:activity' component={ActivityPage}/>
-                <Route path='/bookmarks' component={Bookmarks}/>
-            </Switch>
-        </Router>
-    </ThemeProvider>, document.getElementById('root'));
+  <ThemeProvider>
+    <Router history={history}>
+      <NavBar history={history} appName={"🧭"} />
+      <hr className="divider"/>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/activity/:activity' component={ActivityPage} />
+        <Route path='/bookmarks' component={Bookmarks} />
+      </Switch>
+    </Router>
+  </ThemeProvider>, document.getElementById('root'));

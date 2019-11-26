@@ -45,9 +45,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <header id="app-header">
-          <span>locator</span>
-        </header>
         <div id="pill-container">
           {this.renderActivities(this.state.activities)}
         </div>
