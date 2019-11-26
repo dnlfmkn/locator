@@ -33,7 +33,6 @@
 /* pill container */
 #pill-container {
   display: flex;
-  flex-basis: content;
   flex-wrap: wrap;
   flex-shrink: 1;
   flex-direction: row;

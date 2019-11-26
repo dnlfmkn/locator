@@ -41,7 +41,7 @@ export default function NavBar(props) {
     </div>
     <Toggle
      id="toggle"
-     isDark={themeState.isDark}
+     isDark={themeState.dark}
      onChange={() => themeState.toggle()} />
   </nav>;
 }
