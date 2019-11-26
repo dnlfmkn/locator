@@ -18,7 +18,10 @@ export default function NavBar(props) {
   const [, setCurrentIndex] = useState(0);
 
   return <nav className="navbar">
-    <Link to="/" replace={props.history.location.pathname === '/'}>
+    <Link
+      to="/"
+      className="banner"
+      replace={props.history.location.pathname === '/'}>
       {props.appName}
     </Link>
     <div className="tabs">
@@ -37,6 +40,7 @@ export default function NavBar(props) {
       })}
     </div>
     <Toggle
+     id="toggle"
      isDark={themeState.isDark}
      onChange={() => themeState.toggle()} />
   </nav>;

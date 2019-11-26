@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-#app-header {
-  background-color: antiquewhite;
-  flex-direction: row;
-  align-items: center;
-  min-height: 20%;
-  display: flex;
-  color: grey;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 16px;
+/* divider between navbar and content */
+.divider {
+  display: block;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0.5em 0;
 }
 
 /* pill */
@@ -105,16 +104,48 @@
   align-items: stretch;
 }
 
+/* Navigation bar */
 .navbar {
-
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  flex: auto;
+  justify-content: space-between;
+  padding: 4px 4px;
 }
 
-.tabs {
+.navbar a, .navbar a:visited {
+  text-decoration: none;
+  color: inherit;
+}
 
+.navbar .banner {
+  font-size: 1.5rem;
+  position: relative;
+  left: 10px;
+}
+
+.navbar .tabs {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .tab {
-  
+  font-size: 1.5rem;
+  display: block;
+  margin: 5px;
+}
+
+/* Dark Mode toggle */
+.toggle {
+  position: relative;
+  vertical-align: middle;
+  right: 10px;
+  bottom: 10px;
 }
 
 .toggle label {
@@ -128,7 +159,7 @@
   border: 1px solid whitesmoke;
   background-color: #ccc;
   border-radius: 6.25rem;
-  align-self: end;
+  
 }
 
 .toggle input {
