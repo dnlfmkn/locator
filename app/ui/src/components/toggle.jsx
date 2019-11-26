@@ -5,7 +5,7 @@ import React from 'react';
  * @param {*} props 
  */
 export function Toggle(props) {
-  return <div className="switch">
+  return <div className="toggle">
     <input
      type="checkbox"
      id="switch" 
