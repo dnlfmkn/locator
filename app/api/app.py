@@ -12,6 +12,7 @@ WEATHER_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 def home():
     # TODO: Put data in key:value pairs of concise name to canonical 
     # name to make fetching results using Places API easier
+    # This will involve some manual curation.
     activities = ["Golf", "Swim", "Hike", "Kayak", "Watch a Movie",\
         "Go for Karaoke", "Bike", "Eat", "Go to a Spa", "Shop", \
         "Go to an Arcade", "Run", "Club", "Go-Kart", "Sky-Dive", \

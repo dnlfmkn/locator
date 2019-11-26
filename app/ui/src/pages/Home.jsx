@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Activity from '../components/activity';
 import APIClient from '../api';
-import '../styles/style.css'
+import '../styles/style.css';
 
 /**
  * Home page for the locator app.
@@ -44,11 +44,9 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
         <div id="pill-container">
           {this.renderActivities(this.state.activities)}
         </div>
-      </div>
     );
   }
 }
