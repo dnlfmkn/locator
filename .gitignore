@@ -2,3 +2,5 @@ venv
 .vscode
 app/api/config.py
 __pycache__/
+*.json
+setup.sh

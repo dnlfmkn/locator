@@ -1,0 +1,35 @@
+import firebase_admin
+import google.cloud
+from firebase_admin import credentials, firestore
+
+class FirestoreClient:
+  db = {}
+  
+  def __init__(self):
+    try:
+      cred = credentials.Certificate('../../locator-credentials.json')
+      firebase_admin.initialize_app(cred, {
+        'project_id': 'locator-257401'
+      })
+      self.db = firestore.client()
+    except Exception as e:
+      print('[Error] FirestoreClient#__init__ -> {}'.format(e))
+
+  def add(self, path, data):
+    try:
+      doc_ref = self.db.collection(path).document()
+      doc_ref.set(data)
+      return doc_ref
+    except Exception as e:
+      print('[Error] FirestoreClient#add -> {}'.format(e))
+  
+  def read(self, path, document=None):
+    try:
+      doc_ref = self.db.collection(path)
+      if document is not None:
+        doc_ref = doc_ref.document(document)
+        return doc_ref.get().to_dict()
+      return doc_ref.get()
+    except Exception as e:
+      print('[Error] FirestoreClient#read -> {}'.format(e))
+  
