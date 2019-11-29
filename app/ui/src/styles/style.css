@@ -190,6 +190,10 @@
   font-size: 1.0rem;
 }
 
+.toggle span::after {
+  content: attr(data);
+}
+
 .toggle input:checked+label {
   background: #222;
 }

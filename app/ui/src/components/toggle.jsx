@@ -12,8 +12,8 @@ export function Toggle(props) {
      checked={props.isDark}
      onChange={props.onChange}/>
     <label htmlFor="switch">
-      <span>🌙</span>
-      <span>☀️</span>
+      <span data='🌙'></span>
+      <span data='☀️'></span>
     </label>
   </div>
 }
