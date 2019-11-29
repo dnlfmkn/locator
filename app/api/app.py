@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, json, request, url_for
 from flask_cors import CORS
-import config as config
+import appconfig as config
 import googlemaps
+from geopy.distance import distance
 import pyrebase # for working with Firebase
 
 import sys
@@ -39,13 +40,21 @@ def get_photo(place_result):
     if not os.path.isfile(f'{dir_name}/{file_name}'):
         if place_result.get('photos') is None:
             return #best to return url to some placeholder image
-        photo = gmaps.places_photo(place_result['photos'][0]['photo_reference'], max_width=400)
+        photo = gmaps.places_photo(place_result['photos'][0]['photo_reference'], max_width=100)
         with open(os.path.join(dir_name, file_name), 'wb') as photo_file:
             for chunk in photo:
                 if chunk:
                     photo_file.write(chunk)
-    return url_for('static', filename=file_name)
+    url = url_for('static', filename=file_name)
+    return f'http://localhost:5000{url}' #hardcoded x
 
+def get_bookmarked(place_id):
+    return False #for now
+
+def get_distance(place_result, current_coords):
+    location = place_result['geometry']['location']
+    place_coords = (location['lat'], location['lng'])
+    return round(distance(place_coords, current_coords).miles, 2)
 
 """ Fetches locations for an activity with the help of Places API
     params: activity
@@ -53,7 +62,7 @@ def get_photo(place_result):
 @app.route("/api/<activity>", methods=['GET'])
 def get_locations(activity):
     # dummy response for testing/to avoid making to many requests
-    if ('dummy' in request.args):
+    if (request.args.get('dummy') is not None):
         return to_json([{
         "location_id": 1,
         "img_url": DUMMY_IMAGE,
@@ -65,9 +74,16 @@ def get_locations(activity):
     response = gmaps.places_nearby(location=location, keyword=activity, open_now=True, \
         rank_by='distance')
     results = response['results']
+    refined_results = [] #so much wastage, it hurts
     for result in results:
-        result.update({'photo_url': get_photo(result)}) 
-    return to_json(results)
+        refined_results.append({
+            "location_id": result['id'],
+            "img_url": get_photo(result),
+            "title": result['name'],
+            "distance": get_distance(result, location),
+            "bookmarked": get_bookmarked(result['id']),
+        })
+    return to_json(refined_results)
 
 # Fetches a user's bookmarks
 @app.route("/api/bookmarks", methods=["GET"])
