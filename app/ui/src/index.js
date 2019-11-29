@@ -10,6 +10,8 @@ import Bookmarks from './pages/Bookmarks';
 import { ThemeProvider } from './helpers/ThemeContext';
 import NavBar from './components/navbar';
 import styled from '@emotion/styled';
+import PERMISSIONS from './helpers/constants';
+
 
 const Wrapper = styled("div")`
   transition: background 0.4s ease;
@@ -20,6 +22,15 @@ const Wrapper = styled("div")`
     color: ${props => props.theme.body};
   }
 `;
+
+navigator.permissions.query({
+  name: 'geolocation'
+}).then((permission) => {
+  permission.onchange = () => {
+    localStorage.setItem(PERMISSIONS.geolocation, 
+      permission.state === 'granted');
+  }
+})
 
 const history = createBrowserHistory();
 ReactDOM.render(

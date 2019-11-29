@@ -13,8 +13,8 @@ class APIClient {
     return this.perform('get', `/api`)
   }
 
-  async getLocations(activity) {
-    return this.perform('get', `/api/${activity}`)
+  async getLocations(activity, locationParams) {
+    return this.perform('get', `/api/${activity}`, locationParams)
   }
 
   async addBookmark(activity, locationId) {
@@ -29,7 +29,7 @@ class APIClient {
     return client({
       method,
       url: endpoint,
-      data,
+      params: data,
     }).then((response) => {
       return response.data
     }).catch((error) => {

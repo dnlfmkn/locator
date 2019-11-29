@@ -9,6 +9,7 @@ import Location from '../components/location';
  */
 export default function ActivityPage(props) {
   const apiClient = new APIClient();
+  const location = props.location.state.location;
   const [locations, setLocations] = useState([]);
   
   /**
@@ -18,7 +19,7 @@ export default function ActivityPage(props) {
   useEffect(() => {
     const fetchLocations = async () => {
       const locations = await apiClient
-        .getLocations(props.match.params.activity)
+        .getLocations(props.match.params.activity, location)
       setLocations(locations)
     }
     fetchLocations()
