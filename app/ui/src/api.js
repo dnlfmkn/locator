@@ -30,9 +30,8 @@ class APIClient {
       method,
       url: endpoint,
       params: data,
-    }).then((response) => {
-      return response.data
-    }).catch((error) => {
+    }).then((response) => response.data)
+    .catch((error) => {
       console.log(error)
     })
   }
