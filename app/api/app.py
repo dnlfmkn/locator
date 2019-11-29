@@ -14,6 +14,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 fire_client = FirestoreClient()
 
 WEATHER_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+PLACES_BASE_URL = '...'
 
 @app.route("/api", methods=['GET'])
 def home():
@@ -37,7 +38,7 @@ def get_locations(activity):
         "img_url": 'https://lh5.googleusercontent.com/p/AF1QipNxDeRVJrbay1xANFPPa_SQhng28RQDvsDWhcz3=w408-h305-k-no',
         "title": 'A Lovely Place',
         "distance": 200,
-        "bookmarked": True,
+        "bookmarked": False,
     }])
 
 # Fetches a user's bookmarks
