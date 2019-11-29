@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, json
+from flask import Flask, jsonify, json, request
 from flask_cors import CORS
 import config
 import pyrebase # for working with Firebase
