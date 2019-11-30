@@ -106,7 +106,8 @@ def bookmarks():
 @app.route("/api/<activity>/<int:location_id>", methods=['PUT'])
 #@login_required
 def add_bookmark(location_id):
-    user_bookmarks = fire_client.add(u'bookmarks', location_id) 
+    user_bookmarks = fire_client.collection(u'users').document(insert_user_id_here)\
+    .add(u'bookmarks', data)
     return to_json(user_bookmarks)      #not sure of this
 
 @app.route("/api/<activity>/<int:location_id>", methods=['DELETE'])
