@@ -98,9 +98,10 @@ def get_locations(activity):
 
 # Fetches a user's bookmarks
 @app.route("/api/bookmarks", methods=["GET"])
-@login_required
+#@login_required
 def bookmarks():
-    return
+    users = fire_client.read(u'users')
+    return to_json(list(users))
 
 @app.route("/api/<activity>/<int:location_id>", methods=['PUT'])
 @login_required

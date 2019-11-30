@@ -23,9 +23,9 @@ class FirestoreClient:
     except Exception as e:
       print('[Error] FirestoreClient#add -> {}'.format(e))
   
-  def read(self, path, document=None):
+  def read(self, cpath, document=None):         #cpath is collection 
     try:
-      doc_ref = self.db.collection(path)
+      doc_ref = self.db.collection(cpath) 
       if document is not None:
         doc_ref = doc_ref.document(document)
         return doc_ref.get().to_dict()
