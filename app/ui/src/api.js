@@ -25,6 +25,10 @@ class APIClient {
     return this.perform('delete', `/api/${activity}/${locationId}`);
   }
 
+  async signup(params) {
+    return this.perform('post', `/api/signup`);
+  }
+
   async perform(method, endpoint, data) {
     return client({
       method,

@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, json, request, url_for
+from flask import Flask, jsonify, json, request, url_for, session
 from flask_cors import CORS
 import appconfig as config
 import googlemaps
 from geopy.distance import distance
+from middleware import login_required
 import pyrebase # for working with Firebase
 
 import sys
@@ -13,12 +14,21 @@ from FirestoreClient import FirestoreClient
 app = Flask(__name__, static_folder='static')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+# Initialize clients
 fire_client = FirestoreClient()
 gmaps = googlemaps.Client(key=config.PLACES_API_KEY)
+firebase = pyrebase.initialize_app(config.firebase_config)
 
 DUMMY_IMAGE = 'https://lh5.googleusercontent.com/p/AF1QipNxDeRVJrbay1xANFPPa \
     _SQhng28RQDvsDWhcz3=w408-h305-k-no'
 WEATHER_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+
+@app.route("/api/signup", methods=['POST'])
+def signup():
+    email = request.args['email']
+    password = request.args['password']
+    user = firebase.auth().create_user_with_email_and_password(email, password)
+    session['user_token'] = user['idToken']
 
 @app.route("/api", methods=['GET'])
 def home():
@@ -40,13 +50,14 @@ def get_photo(place_result):
     if not os.path.isfile(f'{dir_name}/{file_name}'):
         if place_result.get('photos') is None:
             return #best to return url to some placeholder image
+        # download the image
         photo = gmaps.places_photo(place_result['photos'][0]['photo_reference'], max_width=100)
         with open(os.path.join(dir_name, file_name), 'wb') as photo_file:
             for chunk in photo:
                 if chunk:
                     photo_file.write(chunk)
     url = url_for('static', filename=file_name)
-    return f'http://localhost:5000{url}' #hardcoded x
+    return f'http://localhost:5000{url}' #hardcoded ❌
 
 def get_bookmarked(place_id):
     return False #for now
@@ -87,14 +98,17 @@ def get_locations(activity):
 
 # Fetches a user's bookmarks
 @app.route("/api/bookmarks", methods=["GET"])
+@login_required
 def bookmarks():
     return
 
 @app.route("/api/<activity>/<int:location_id>", methods=['PUT'])
+@login_required
 def add_bookmark(location_id):
     return
 
 @app.route("/api/<activity>/<int:location_id>", methods=['DELETE'])
+@login_required
 def delete_bookmark(location_id):
     return
 
