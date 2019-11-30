@@ -23,6 +23,10 @@ class FirestoreClient:
     except Exception as e:
       print('[Error] FirestoreClient#add -> {}'.format(e))
   
+<<<<<<< HEAD
+=======
+  #tested
+>>>>>>> b8b6450f9adb1c2b0db3815f77625131d631f680
   def read(self, cpath, document=None):         #cpath is collection 
     try:
       doc_ref = self.db.collection(cpath) 
