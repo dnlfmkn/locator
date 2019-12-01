@@ -128,9 +128,12 @@ def bookmarks():
     return to_json(list(users))
 
 @app.route("/api/<activity>/<int:location_id>", methods=['PUT'])
-@login_required
+#@login_required
 def add_bookmark(location_id):
-    return
+    user_id = session.get('user_token', None)
+    fire_client.collection(u'users').document(user_id)\
+    .add(u'bookmarks', location_id)
+    return to_json({'success': 'New bookmark added'})      #not sure of this
 
 @app.route("/api/<activity>/<int:location_id>", methods=['DELETE'])
 @login_required
