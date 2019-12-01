@@ -2,6 +2,8 @@ from flask import Flask, jsonify, json, request, url_for, session
 from flask_cors import CORS
 import appconfig as config
 import googlemaps
+import firebase_admin
+from firebase_admin import credentials, auth, firestore
 from geopy.distance import distance
 from middleware import login_required
 import pyrebase # for working with Firebase
@@ -18,6 +20,10 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 fire_client = FirestoreClient()
 gmaps = googlemaps.Client(key=config.PLACES_API_KEY)
 firebase = pyrebase.initialize_app(config.firebase_config)
+cred = credentials.Certificate(config.firebase_config['serviceAccount'])
+firebase_admin.initialize_app(cred, {
+    'project_id': 'locator-257401'
+})
 
 DUMMY_IMAGE = 'https://lh5.googleusercontent.com/p/AF1QipNxDeRVJrbay1xANFPPa \
     _SQhng28RQDvsDWhcz3=w408-h305-k-no'
@@ -27,8 +33,25 @@ WEATHER_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
 def signup():
     email = request.args['email']
     password = request.args['password']
-    user = firebase.auth().create_user_with_email_and_password(email, password)
-    session['user_token'] = user['idToken']
+    display_name = request.args['username']
+    try:
+        user = auth.create_user(email=email, password=password,\
+             display_name=display_name)
+        session['user_token'] = user.uid
+        misc_data = {
+            'fn': request.args['firstname'],
+            'ln': request.args['lastname']
+        }
+        try:
+            firestore.client().collection(u'users').\
+                document(user.uid).set(misc_data)
+        except Exception as e:
+            print('Failed to update user data: {}'.format(e))
+        print(user.uid) #testing
+        return to_json({'success': 'Created user'})
+    except Exception as e:
+        print(e) 
+     
 
 @app.route("/api", methods=['GET'])
 def home():
@@ -41,6 +64,7 @@ def home():
         "Go to a bar", "Dance"]
     return jsonify(activities)
 
+# will defer this to a background thread
 def get_photo(place_result):
     dir_name = 'static'
     file_id = place_result['id']
