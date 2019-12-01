@@ -3,10 +3,16 @@ import Input from '../components/input';
 import { useForm } from '../helpers/hooks';
 import { Link } from 'react-router-dom';
 import validate from '../helpers/validate';
+import APIClient from '../api';
 
 export default function Signup(props) {
   const [valid, setIsValid] = useState(false);
-  const { handleChange, values, errors } = useForm(validate);
+  const apiClient = new APIClient();
+  const { 
+    handleChange,
+    values,
+    errors
+  } = useForm(validate);
   const initialMount = useRef(true);
 
   useEffect(() => {
@@ -15,7 +21,7 @@ export default function Signup(props) {
         initialMount.current = false;
         return;
       } 
-      setIsValid(isEmpty(errors))
+      setIsValid(isEmpty(errors) && hasValidMembers(values))
     }
     enable()
   }, [errors])
@@ -29,11 +35,25 @@ export default function Signup(props) {
     return true
   }
 
-  const signup = (values) => {
-
+  const hasValidMembers = (obj) => {
+    for (var key in obj) {
+      if (obj[key] === "") {
+        return false
+      }
+    }
+    return true
   }
 
-  return <form>
+  const signup = (event) => {
+    event.preventDefault()
+    const data = new FormData(event.target)
+    for (var [key, value] of data.entries()) { 
+      console.log(key, value);
+    }
+    //signup here
+  }
+
+  return <form onSubmit={signup}>
     <h3>Sign Up</h3>
     <Input
       type="text"
@@ -59,8 +79,7 @@ export default function Signup(props) {
     <button
      type="submit"
      className="btn btn-primary btn-block"
-     disabled={!valid}
-     onClick={() => signup(values)}>
+     disabled={!valid}>
       Sign Up
     </button>
     <p className="forgot-password text-right">

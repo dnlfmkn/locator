@@ -15,7 +15,16 @@ export const useForm = (validate) => {
       return;
     } 
     const errors = validate(values)
-    setErrors(errors)
+    const touchedErrors = Object.keys(errors)
+      .filter(key => values[key] !== "")
+      .reduce((acc, key) => {
+        if (!acc[key]) {
+          acc[key] = errors[key]
+        }
+        return acc
+      }, {})
+    console.log(touchedErrors)
+    setErrors(touchedErrors)
   }, [values])
 
   const handleChange = (event) => {
