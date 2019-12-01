@@ -7,6 +7,8 @@ import './index.css';
 import Home from './pages/Home';
 import ActivityPage from './pages/ActivityPage';
 import Bookmarks from './pages/Bookmarks';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import { ThemeProvider } from './helpers/ThemeContext';
 import NavBar from './components/navbar';
 import styled from '@emotion/styled';
@@ -42,6 +44,8 @@ ReactDOM.render(
       <hr className="divider"/>
       <Switch>
         <Route exact path='/' component={Home} />
+        <Route path='/signup' component={Signup} />
+        <Route path='/login' component={Login} />
         <Route path='/activity/:activity' component={ActivityPage} />
         <Route path='/bookmarks' component={Bookmarks} />
       </Switch>
