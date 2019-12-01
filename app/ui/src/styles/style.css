@@ -201,3 +201,9 @@
 .invalid-feedback {
   display: block!important;
 }
+
+.form-container {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+}

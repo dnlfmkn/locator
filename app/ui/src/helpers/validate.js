@@ -19,8 +19,8 @@ export default function validate(values) {
       }
     }
     
-    validatePassword(values.password)
-    validateEmail(values.email)
-    validateUsername(values.username)
+    if (values.password) validatePassword(values.password)
+    if (values.email) validateEmail(values.email)
+    if (values.username) validateUsername(values.username)
     return errors
   }
