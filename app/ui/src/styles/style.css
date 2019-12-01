@@ -197,3 +197,7 @@
 .toggle input:checked+label {
   background: #222;
 }
+
+.invalid-feedback {
+  display: block!important;
+}
