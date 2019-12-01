@@ -1,12 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 
-export const useForm = (validate) => {
+export const useForm = (initialState, validate) => {
   const initialMount = useRef(true);
-  const [values, setValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-  })
+  const [values, setValues] = useState(initialState)
   const [errors, setErrors] = useState({})
 
   useEffect(() => {

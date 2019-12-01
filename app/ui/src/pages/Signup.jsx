@@ -4,6 +4,7 @@ import { useForm } from '../helpers/hooks';
 import { Link } from 'react-router-dom';
 import validate from '../helpers/validate';
 import APIClient from '../api';
+import { isEmpty, hasValidMembers } from '../helpers/utils';
 
 export default function Signup(props) {
   const [valid, setIsValid] = useState(false);
@@ -12,7 +13,11 @@ export default function Signup(props) {
     handleChange,
     values,
     errors
-  } = useForm(validate);
+  } = useForm({
+    username: '',
+    email: '',
+    password: ''
+  }, validate);
   const initialMount = useRef(true);
 
   useEffect(() => {
@@ -26,24 +31,6 @@ export default function Signup(props) {
     enable()
   }, [errors])
 
-  const isEmpty = (obj) => {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false
-      }
-    }
-    return true
-  }
-
-  const hasValidMembers = (obj) => {
-    for (var key in obj) {
-      if (obj[key] === "") {
-        return false
-      }
-    }
-    return true
-  }
-
   const signup = (event) => {
     event.preventDefault()
     const data = new FormData(event.target)
@@ -53,37 +40,39 @@ export default function Signup(props) {
     //signup here
   }
 
-  return <form onSubmit={signup}>
-    <h3>Sign Up</h3>
-    <Input
-      type="text"
-      label="Username"
-      id="username"
-      onChange={handleChange}
-      value={values.username || ''}
-      message={errors.username}/>
-    <Input
-      type="email"
-      label="Email"
-      id="email"
-      onChange={handleChange}
-      value={values.email || ''}
-      message={errors.email}/>
-    <Input
-      type="password"
-      label="Password"
-      id="password"
-      onChange={handleChange}
-      value={values.password || ''}
-      message={errors.password}/>
-    <button
-     type="submit"
-     className="btn btn-primary btn-block"
-     disabled={!valid}>
-      Sign Up
-    </button>
-    <p className="forgot-password text-right">
-      Have an account? <Link to='/login'>log in</Link>
-    </p>
-  </form>
+  return <div className="form-container">
+      <form onSubmit={signup}>
+      <h3>Sign Up</h3>
+      <Input
+        type="text"
+        label="Username"
+        id="username"
+        onChange={handleChange}
+        value={values.username || ''}
+        message={errors.username}/>
+      <Input
+        type="email"
+        label="Email"
+        id="email"
+        onChange={handleChange}
+        value={values.email || ''}
+        message={errors.email}/>
+      <Input
+        type="password"
+        label="Password"
+        id="password"
+        onChange={handleChange}
+        value={values.password || ''}
+        message={errors.password}/>
+      <button
+      type="submit"
+      className="btn btn-primary btn-block"
+      disabled={!valid}>
+        Sign Up
+      </button>
+      <p className="forgot-password text-right">
+        Have an account? <Link to='/login'>log in</Link>
+      </p>
+    </form>
+  </div>
 }
