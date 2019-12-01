@@ -12,7 +12,9 @@ export default function NavBar(props) {
   const themeState = useTheme();
   const tabs = [
     { id: 0, title: 'Home', path: '/' },
-    { id: 1, title: 'Bookmarks', path: '/bookmarks' }
+    { id: 1, title: 'Bookmarks', path: '/bookmarks' },
+    { id: 2, title: 'Login', path: '/login' },
+    { id: 3, title: 'Signup', path: '/signup' }
   ]
 
   const [, setCurrentIndex] = useState(0);
@@ -27,7 +29,7 @@ export default function NavBar(props) {
     <div className="tabs">
       {tabs.map((tab, index) => {
         return <Link
-          to={index === 0 ? "/" : "/bookmarks"}
+          to={tabs[index].path}
           replace={tab.path === props.history.location.pathname}
           key={tab.id}
           className={"tab" +
