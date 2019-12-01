@@ -11,6 +11,7 @@
     "@emotion/core": "10.0.22",
     "@emotion/styled": "10.0.23",
     "react-router-dom": "5.1.2",
+    "bootstrap": "4.4.1",
     "react-scripts": "3.2.0"
   },
   "scripts": {
