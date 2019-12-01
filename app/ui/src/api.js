@@ -29,6 +29,13 @@ class APIClient {
     return this.perform('post', `/api/signup`);
   }
 
+  async signin(email, password) {
+    return this.perform('post', `/api/signin`, {
+      email: email,
+      password: password,
+    });
+  }
+
   async perform(method, endpoint, data) {
     return client({
       method,

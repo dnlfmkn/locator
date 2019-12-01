@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../helpers/ThemeContext';
 import { Toggle } from './toggle';
+import { useAuth } from '../helpers/AuthContext';
 
 /**
  * Navigation Bar for the app. Contains quick links to Home and Bookmarks
@@ -10,6 +11,7 @@ import { Toggle } from './toggle';
  */
 export default function NavBar(props) {
   const themeState = useTheme();
+  const authState = useAuth();
   const tabs = [
     { id: 0, title: 'Home', path: '/' },
     { id: 1, title: 'Bookmarks', path: '/bookmarks' },

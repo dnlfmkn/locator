@@ -13,6 +13,7 @@ import { ThemeProvider } from './helpers/ThemeContext';
 import NavBar from './components/navbar';
 import styled from '@emotion/styled';
 import PERMISSIONS from './helpers/constants';
+import { AuthProvider } from './helpers/AuthContext';
 
 
 const Wrapper = styled("div")`
@@ -46,11 +47,13 @@ ReactDOM.render(
       <NavBar history={history} appName={"🧭"} />
       <hr className="divider"/>
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/login' component={Login} />
-        <Route path='/activity/:activity' component={ActivityPage} />
-        <Route path='/bookmarks' component={Bookmarks} />
+        <AuthProvider>
+          <Route exact path='/' component={Home} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/login' component={Login} />
+          <Route path='/activity/:activity' component={ActivityPage} />
+          <Route path='/bookmarks' component={Bookmarks} />
+        </AuthProvider>
       </Switch>
       </Wrapper>
     </Router>

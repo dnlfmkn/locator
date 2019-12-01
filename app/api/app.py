@@ -38,19 +38,18 @@ def signup():
         user = auth.create_user(email=email, password=password,\
              display_name=display_name)
         session['user_token'] = user.uid
-        misc_data = {
-            'fn': request.args['firstname'],
-            'ln': request.args['lastname']
-        }
-        try:
-            firestore.client().collection(u'users').\
-                document(user.uid).set(misc_data)
-        except Exception as e:
-            print('Failed to update user data: {}'.format(e))
         print(user.uid) #testing
         return to_json({'success': 'Created user'})
     except Exception as e:
         print(e) 
+
+@app.route('/logout')
+def signout():
+    try:
+        del session['user_token']
+        return to_json({'success': 'Signed out'}, 200)
+    except KeyError:
+        return to_json({'error' : 'Failed to sign out'}, 404)
      
 
 @app.route("/api", methods=['GET'])
