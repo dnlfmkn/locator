@@ -26,11 +26,10 @@ export default function Location(props) {
           return;
         }
         if (!isBookmarked) {
-          result = await apiClient.addBookmark(activity, locationId);
+          await apiClient.addBookmark(activity, locationId);
         } else {
-          result = await apiClient.deleteBookmark(activity, locationId);
+          await apiClient.deleteBookmark(activity, locationId);
         }
-        setIsBookmarked(result);
       }
       bookmark();
   }, [isBookmarked]);
