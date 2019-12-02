@@ -3,12 +3,12 @@ import Input from '../components/input';
 import { useForm } from '../helpers/hooks';
 import { Link } from 'react-router-dom';
 import validate from '../helpers/validate';
-import APIClient from '../api';
 import { isEmpty, hasValidMembers } from '../helpers/utils';
+import { useAuth } from '../helpers/AuthContext';
 
 export default function Signup(props) {
   const [valid, setIsValid] = useState(false);
-  const apiClient = new APIClient();
+  const auth = useAuth();
   const { 
     handleChange,
     values,
@@ -34,10 +34,10 @@ export default function Signup(props) {
   const signup = (event) => {
     event.preventDefault()
     const data = new FormData(event.target)
-    for (var [key, value] of data.entries()) { 
-      console.log(key, value);
-    }
-    //signup here
+    const _jsonData = {}
+    data.forEach((key, value) => { _jsonData[value] = key })
+    console.log(_jsonData)
+    auth.signup(_jsonData)
   }
 
   return <div className="form-container">

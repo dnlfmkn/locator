@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../helpers/ThemeContext';
 import { Toggle } from './toggle';
 import { useAuth } from '../helpers/AuthContext';
+import styled from '@emotion/styled';
 
 /**
  * Navigation Bar for the app. Contains quick links to Home and Bookmarks
@@ -11,16 +12,33 @@ import { useAuth } from '../helpers/AuthContext';
  */
 export default function NavBar(props) {
   const themeState = useTheme();
-  const authState = useAuth();
+  const {
+    authState,
+    _signin,
+    _signup,
+    signout
+  } = useAuth();
   const tabs = [
     { id: 0, title: 'Home', path: '/' },
     { id: 1, title: 'Bookmarks', path: '/bookmarks' },
-    { id: 2, title: 'Login', path: '/login' },
-    { id: 3, title: 'Signup', path: '/signup' }
   ]
 
   const [, setCurrentIndex] = useState(0);
 
+  const Button = styled("a")`
+    background: ${props => props.theme.background};
+    border: 1px solid ${props => props.theme.body};
+    color: ${props => props.theme.body};
+    border-radius: 10px;
+    padding: 4px 10px 5px 10px;
+    cursor: pointer;
+  `
+  const Container = styled("div")`
+    display: flex;
+    flex-direction: row;
+    align-items: center;"
+  `
+  //console.log(authState.auth)
   return <nav className="navbar">
     <Link
       to="/"
@@ -43,9 +61,17 @@ export default function NavBar(props) {
         </Link>
       })}
     </div>
-    <Toggle
-     id="toggle"
-     isDark={themeState.dark}
-     onChange={() => themeState.toggle()} />
+    <Container>
+      <Toggle
+      id="toggle"
+      isDark={themeState.dark}
+      onChange={() => themeState.toggle()} />
+      {console.log(authState.auth)}
+      {authState.auth ? (
+          <Button onClick={() => signout()}>Sign out</Button>
+        ) : (
+          <Link to="/login">Log In</Link>
+      )}
+    </Container>
   </nav>;
 }
