@@ -3,16 +3,18 @@ import { useForm } from '../helpers/hooks';
 import { hasValidMembers, isEmpty } from '../helpers/utils';
 import validate from '../helpers/validate';
 import Input from '../components/input';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 import { useAuth } from '../helpers/AuthContext';
 
-export default function Login(props) {
+function Login(props) {
   const [valid, setIsValid] = useState(false)
+  const [redirect, setRedirect] = useState(false)
+  const referrer = props.location.state || { from: '/bookmarks' }
   const {
-    _authState,
+    authState,
     signin,
     _signup,
-    _signout
+    _signout,
   } = useAuth();
   const { 
     handleChange,
@@ -23,27 +25,39 @@ export default function Login(props) {
     password: ''
   }, validate);
   const initialMount = useRef(true);
+  const _initMount = useRef(true);
 
   useEffect(() => {
     const enable = () => {
       if (initialMount.current) {
         initialMount.current = false;
         return;
-      } 
+      }
       setIsValid(isEmpty(errors) && hasValidMembers(values))
     }
     enable()
   }, [errors])
 
-  const login = (event) => {
+  useEffect(() => {
+    if (_initMount.current) {
+      _initMount.current = false;
+      return;
+    }
+    setRedirect(true)
+  }, [authState.auth])
+
+  const login = async(event) => {
     event.preventDefault()
     const data = new FormData(event.target)
     const jsonData = {}
     data.forEach((key, value) => { jsonData[value] = key })
     signin(jsonData.email, jsonData.password)
+      .catch((error) => {
+         console.log(error.response)
+      })
   }
 
-  return (
+  return (redirect ? <Redirect to="/bookmarks" /> :
   <div className="form-container">
     <form onSubmit={login}>
       <h3>Log In</h3>
@@ -71,3 +85,5 @@ export default function Login(props) {
     </form>
   </div>);
 }
+
+export default withRouter(Login)

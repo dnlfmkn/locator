@@ -30,6 +30,9 @@ const useEffectAuth = () => {
         setAuthState({...authState, auth: response})
         return authState
       })
+      .catch((err) => {
+        throw err
+      })
   }
 
   const signup = async(params) => {
@@ -54,7 +57,7 @@ const useEffectAuth = () => {
     authState,
     signin,
     signup,
-    signout
+    signout,
   }
 }
 

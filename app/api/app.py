@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, json, request, url_for, session, g
+from flask import Flask, jsonify, json, request, url_for, session
 import requests
 from requests.exceptions import HTTPError
 from flask_cors import CORS
@@ -7,7 +7,6 @@ import googlemaps
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
 from geopy.distance import distance
-from middleware import login_required
 import pyrebase # for working with Firebase
 
 import sys
@@ -16,8 +15,9 @@ sys.path.append(os.path.abspath('../repository'))
 from FirestoreClient import FirestoreClient
 
 app = Flask(__name__, static_folder='static')
-app.secret_key = os.urandom(24) #initialize unique session
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.config['SECRET_KEY'] = 'bbH2vzVY1QpFQLpdEvqr8g'
+app.config['SESSION_TYPE'] = 'filesystem' #initialize unique session
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, support_credentials=True)
 
 # Initialize clients
 fire_client = FirestoreClient()
@@ -36,13 +36,15 @@ def signin():
         response = firebase.auth().\
             sign_in_with_email_and_password(email, password)
         session['user_token'] = response['localId']
+        print(session.get('user_token'))
         return to_json({
             'uid': response['localId'],
             'email': response['email'],
             'display_name': response['displayName']
         })
     except HTTPError as e:
-        print(e)
+        error_json = e.args[1]
+        return (json.loads(error_json)['error'], 400)
 
 @app.route("/api/signup", methods=['POST'])
 def signup():
@@ -68,7 +70,8 @@ def signup():
 @app.route('/api/logout', methods=['POST'])
 def signout():
     try:
-        session.clear()
+        session.pop('user_token', None)
+        firebase.auth().current_user = None
         return to_json({'success': 'Signed out'}, 200)
     except KeyError:
         print('hit an error')
@@ -144,25 +147,33 @@ def get_locations(activity):
 
 # Fetches a user's bookmarks
 @app.route("/api/bookmarks", methods=["GET"])
-#@login_required
 def bookmarks():
-    users = fire_client.read(u'users')
-    return to_json(list(users))
+    user_id = session.get("user_token", None)
+    user = firestore.client().collection(u'users').document(user_id)
+    bookmarks = user.collection(u'bookmarks')
+    return to_json({k.id: k.to_dict() for k in bookmarks.get()})
 
-@app.route("/api/<activity>/<int:location_id>", methods=['PUT'])
-#@login_required
-def add_bookmark(location_id):
-    user_id = session.get('user_token', None)
-    fire_client.collection(u'users').document(user_id)\
-    .add(u'bookmarks', location_id)
+@app.after_request
+def after_req(response):
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
+
+@app.route("/api/<activity>/<location_id>", methods=['POST'])
+def add_bookmark(activity, location_id):
+    user_id = session.get('user_token')
+    print(session)
+    firestore.client().collection(u'users').document(user_id)\
+        .collection(u'bookmarks').document(location_id).set({
+            'location_id': location_id,
+            'activity': activity
+        })
     return to_json({'success': 'New bookmark added'})      #not sure of this
 
-@app.route("/api/<activity>/<int:location_id>", methods=['DELETE'])
-#@login_required
-def delete_bookmark(location_id):
+@app.route("/api/<activity>/<location_id>", methods=['DELETE'])
+def delete_bookmark(activity, location_id):
     user_id = session.get('user_token', None)
-    user = fire_client.collection(u'users').document(user_id)
-    if user.collection(u'bookmarks').document(location_id).get().exists
+    user = firestore.client().collection(u'users').document(user_id)
+    if user.collection(u'bookmarks').document(location_id).get().exists:
         user.collection(u'bookmarks').document(location_id).delete() 
         return to_json({'success': 'Bookmark deleted'})
     return to_json({'Invalid': 'Bookmark does not exist'})

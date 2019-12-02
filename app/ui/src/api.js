@@ -6,6 +6,7 @@ This class will handle all API calls to the Flask backend
 const BASE_URL = 'http://localhost:5000'
 const client = axios.create({
   baseURL: BASE_URL, 
+  withCredentials: true,
 });
 
 class APIClient {
@@ -17,8 +18,12 @@ class APIClient {
     return this.perform('get', `/api/${activity}`, locationParams)
   }
 
+  async getBookmarks() {
+    return this.perform('get', `/api/bookmarks`)
+  }
+
   async addBookmark(activity, locationId) {
-    return this.perform('put', `/api/${activity}/${locationId}`);
+    return this.perform('post', `/api/${activity}/${locationId}`);
   }
 
   async deleteBookmark(activity, locationId) {
@@ -47,7 +52,7 @@ class APIClient {
       params: data,
     }).then((response) => response.data)
     .catch((error) => {
-      console.log(error)
+      throw error
     })
   }
 }

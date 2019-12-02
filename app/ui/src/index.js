@@ -49,10 +49,10 @@ ReactDOM.render(
       <hr className="divider"/>
       <Switch>
           <Route exact path='/' component={Home} />
-          <Route path='/signup' component={Signup} />
-          <Route path='/login' component={Login} />
           <Route path='/activity/:activity' component={ActivityPage} />
           <Route path='/bookmarks' component={Bookmarks} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/login' component={Login} />
       </Switch>
       </Wrapper>
     </Router>
