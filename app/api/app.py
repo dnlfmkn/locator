@@ -1,4 +1,6 @@
-from flask import Flask, jsonify, json, request, url_for, session
+from flask import Flask, jsonify, json, request, url_for, session, g
+import requests
+from requests.exceptions import HTTPError
 from flask_cors import CORS
 import appconfig as config
 import googlemaps
@@ -14,20 +16,33 @@ sys.path.append(os.path.abspath('../repository'))
 from FirestoreClient import FirestoreClient
 
 app = Flask(__name__, static_folder='static')
+app.secret_key = os.urandom(24) #initialize unique session
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Initialize clients
 fire_client = FirestoreClient()
 gmaps = googlemaps.Client(key=config.PLACES_API_KEY)
 firebase = pyrebase.initialize_app(config.firebase_config)
-cred = credentials.Certificate(config.firebase_config['serviceAccount'])
-firebase_admin.initialize_app(cred, {
-    'project_id': 'locator-257401'
-})
 
 DUMMY_IMAGE = 'https://lh5.googleusercontent.com/p/AF1QipNxDeRVJrbay1xANFPPa \
     _SQhng28RQDvsDWhcz3=w408-h305-k-no'
 WEATHER_BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?'
+
+@app.route("/api/signin", methods=['POST'])
+def signin():
+    email = request.args['email']
+    password = request.args['password']
+    try:
+        response = firebase.auth().\
+            sign_in_with_email_and_password(email, password)
+        session['user_token'] = response['localId']
+        return to_json({
+            'uid': response['localId'],
+            'email': response['email'],
+            'display_name': response['displayName']
+        })
+    except HTTPError as e:
+        print(e)
 
 @app.route("/api/signup", methods=['POST'])
 def signup():
@@ -39,16 +54,24 @@ def signup():
              display_name=display_name)
         session['user_token'] = user.uid
         print(user.uid) #testing
-        return to_json({'success': 'Created user'})
+        return to_json({
+            'uid': user.uid,
+            'email': user.email,
+            'display_name': user.display_name,
+            'metadata': {
+                'creation_date': user.user_metadata.creation_timestamp,
+            },
+        })
     except Exception as e:
         print(e) 
 
-@app.route('/logout')
+@app.route('/api/logout', methods=['POST'])
 def signout():
     try:
-        del session['user_token']
+        session.clear()
         return to_json({'success': 'Signed out'}, 200)
     except KeyError:
+        print('hit an error')
         return to_json({'error' : 'Failed to sign out'}, 404)
      
 

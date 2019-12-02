@@ -17,7 +17,7 @@ import { AuthProvider } from './helpers/AuthContext';
 
 
 const Wrapper = styled("div")`
-  transition: background 0.4s ease;
+  transition: background 0.6s ease;
   background: ${props => props.theme.background};
   width: 100vw;
   height: 100vh;
@@ -41,20 +41,20 @@ navigator.permissions.query({
 
 const history = createBrowserHistory();
 ReactDOM.render(
+  <AuthProvider>
   <ThemeProvider>
     <Router history={history}>
       <Wrapper>
       <NavBar history={history} appName={"🧭"} />
       <hr className="divider"/>
       <Switch>
-        <AuthProvider>
           <Route exact path='/' component={Home} />
           <Route path='/signup' component={Signup} />
           <Route path='/login' component={Login} />
           <Route path='/activity/:activity' component={ActivityPage} />
           <Route path='/bookmarks' component={Bookmarks} />
-        </AuthProvider>
       </Switch>
       </Wrapper>
     </Router>
-  </ThemeProvider>, document.getElementById('root'));
+  </ThemeProvider>
+  </AuthProvider>, document.getElementById('root'));

@@ -26,7 +26,7 @@ class APIClient {
   }
 
   async signup(params) {
-    return this.perform('post', `/api/signup`);
+    return this.perform('post', `/api/signup`, params);
   }
 
   async signin(email, password) {
@@ -34,6 +34,10 @@ class APIClient {
       email: email,
       password: password,
     });
+  }
+
+  async signout() {
+    return this.perform('post', `/api/logout`)
   }
 
   async perform(method, endpoint, data) {

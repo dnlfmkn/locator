@@ -4,9 +4,16 @@ import { hasValidMembers, isEmpty } from '../helpers/utils';
 import validate from '../helpers/validate';
 import Input from '../components/input';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../helpers/AuthContext';
 
 export default function Login(props) {
   const [valid, setIsValid] = useState(false)
+  const {
+    _authState,
+    signin,
+    _signup,
+    _signout
+  } = useAuth();
   const { 
     handleChange,
     values,
@@ -31,11 +38,14 @@ export default function Login(props) {
   const login = (event) => {
     event.preventDefault()
     const data = new FormData(event.target)
+    const jsonData = {}
+    data.forEach((key, value) => { jsonData[value] = key })
+    signin(jsonData.email, jsonData.password)
   }
 
   return (
   <div className="form-container">
-    <form>
+    <form onSubmit={login}>
       <h3>Log In</h3>
       <Input type="email"
         label="Email"

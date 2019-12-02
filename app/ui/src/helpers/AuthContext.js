@@ -1,20 +1,25 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import APIClient from '../api';
 
-const defaultContext = {
-  auth: null,
-}
-
 const apiClient = new APIClient()
 
-const AuthContext = createContext(defaultContext)
-const useAuth = () => useContext(AuthContext)
+const AuthContext = createContext()
+const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    console.log("Use within a context")
+  }
+  return context
+}
 
 const useEffectAuth = () => {
-  const [authState, setAuthState] = useState(null)
+  const [authState, setAuthState] = useState({
+    auth: null,
+    hasAuthMounted: false
+  });
   useEffect(() => {
     const lsAuthState = localStorage.getItem("authState")
-    setAuthState({...authState, auth: lsAuthState})
+    setAuthState({...authState, auth: lsAuthState, hasAuthMounted: true})
   }, [])
 
   const signin = async(email, password) => {
@@ -23,6 +28,7 @@ const useEffectAuth = () => {
       .then((response) => {
         localStorage.setItem("authState", JSON.stringify(response))
         setAuthState({...authState, auth: response})
+        return authState
       })
   }
 
@@ -32,6 +38,7 @@ const useEffectAuth = () => {
       .then((response) => {
         localStorage.setItem("authState", JSON.stringify(response))
         setAuthState({...authState, auth: response})
+        return authState
       })
   }
 
@@ -39,7 +46,8 @@ const useEffectAuth = () => {
     return await apiClient
       .signout()
       .then((response) => {
-        if (response.success) setAuthState({...authState, auth: null})
+        localStorage.removeItem("authState")
+        setAuthState({...authState, auth: null})
       })
   }
   return {
@@ -52,6 +60,10 @@ const useEffectAuth = () => {
 
 const AuthProvider = ({children}) => {
   const auth = useEffectAuth();
+  if (!auth.authState.hasAuthMounted) {
+    return <div />
+  }
+
   return (
    <AuthContext.Provider value={auth}>
     {children}
