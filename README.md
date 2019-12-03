@@ -1,6 +1,8 @@
 # locator 🔎
 A web app to help you find your interests..
 
+**Built by:** Daniel Famakin, Oreoluwa Runsewe and Henry Odunze
+
 ## How to contribute
 **_Please read this carefully_**. If you are new to this repo and would like to contribute, do the following:
 * Create an empty directory on your local machine, then clone **this repository** into the directory by running the following command: 
