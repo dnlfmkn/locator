@@ -36,7 +36,6 @@ export default function Signup(props) {
     const data = new FormData(event.target)
     const _jsonData = {}
     data.forEach((key, value) => { _jsonData[value] = key })
-    console.log(_jsonData)
     auth.signup(_jsonData)
   }
 

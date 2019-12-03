@@ -19,7 +19,6 @@ export const useForm = (initialState, validate) => {
         }
         return acc
       }, {})
-    console.log(touchedErrors)
     setErrors(touchedErrors)
   }, [values])
 
