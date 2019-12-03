@@ -3,14 +3,15 @@ import { withRouter } from 'react-router-dom';
 import Activity from '../components/activity';
 import APIClient from '../api';
 import '../styles/style.css';
+import MESSAGES from '../helpers/constants'
+import { getLocationError } from '../helpers/utils' 
 
 /**
  * Home page for the locator app.
  * Displays a list of activities that interested users may want 
  * to perform
  */
-const UNSUPPORTED_BROWSER_ERROR_MSG = `Seems like your browser does
-  not support geolocation which is required for this app.`
+
 
 class Home extends Component {
   constructor(props) {
@@ -27,10 +28,10 @@ class Home extends Component {
   async componentDidMount() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        this.getLocationSuccess, this.getLocationError
+        this.getLocationSuccess, getLocationError
       );
     } else {
-      alert(UNSUPPORTED_BROWSER_ERROR_MSG);
+      alert(MESSAGES.UNSUPPORTED_BROWSER_ERROR_MSG);
     }
     this.apiClient = new APIClient();
     this.apiClient.getActivities()
@@ -49,23 +50,6 @@ class Home extends Component {
     }))
   }
   
-  getLocationError = (error) => {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        console.log('User denied geolocation permission')
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.log('Cannot find current position')
-        break;
-      case error.TIMEOUT:
-        console.log('The request to get user location timed out')
-        break;
-      case error.UNKNOWN_ERROR:
-        console.log('An unknown error occured')
-        break;
-    }
-  }
-
   /**
    * Links to activity page on clicking activity pill
    */
