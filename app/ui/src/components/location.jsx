@@ -25,7 +25,7 @@ export default function Location(props) {
           initialMount.current = false;
           return;
         }
-        if (!isBookmarked) {
+        if (isBookmarked === true) {
           await apiClient.addBookmark(activity, locationId);
         } else {
           await apiClient.deleteBookmark(activity, locationId);

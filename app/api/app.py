@@ -36,7 +36,6 @@ def signin():
         response = firebase.auth().\
             sign_in_with_email_and_password(email, password)
         session['user_token'] = response['localId']
-        print(session.get('user_token'))
         return to_json({
             'uid': response['localId'],
             'email': response['email'],
@@ -55,7 +54,6 @@ def signup():
         user = auth.create_user(email=email, password=password,\
              display_name=display_name)
         session['user_token'] = user.uid
-        print(user.uid) #testing
         return to_json({
             'uid': user.uid,
             'email': user.email,
@@ -74,7 +72,6 @@ def signout():
         firebase.auth().current_user = None
         return to_json({'success': 'Signed out'}, 200)
     except KeyError:
-        print('hit an error')
         return to_json({'error' : 'Failed to sign out'}, 404)
      
 
@@ -92,7 +89,7 @@ def home():
 # will defer this to a background thread
 def get_photo(place_result):
     dir_name = 'static'
-    file_id = place_result['id']
+    file_id = place_result['place_id']
     file_name = f'{file_id}.jpg'
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
@@ -100,7 +97,7 @@ def get_photo(place_result):
         if place_result.get('photos') is None:
             return #best to return url to some placeholder image
         # download the image
-        photo = gmaps.places_photo(place_result['photos'][0]['photo_reference'], max_width=100)
+        photo = gmaps.places_photo(place_result['photos'][0]['photo_reference'], max_width=500)
         with open(os.path.join(dir_name, file_name), 'wb') as photo_file:
             for chunk in photo:
                 if chunk:
@@ -109,12 +106,29 @@ def get_photo(place_result):
     return f'http://localhost:5000{url}' #hardcoded ❌
 
 def get_bookmarked(place_id):
-    return False #for now
+    user_id = session['user_token']
+    place = firestore.client().collection(u'users').document(user_id).\
+        collection(u'bookmarks').document(place_id).get()
+    return place.exists
 
 def get_distance(place_result, current_coords):
     location = place_result['geometry']['location']
     place_coords = (location['lat'], location['lng'])
     return round(distance(place_coords, current_coords).miles, 2)
+
+@app.route("/api/bookmarked/<location_id>", methods=['GET'])
+def get_location(location_id):
+    location = (request.args['lat'], request.args['long'])
+    print(f'Location ID is: {location_id}')
+    response = gmaps.place(place_id=location_id, fields=['name',\
+         'place_id', 'geometry/location', 'photo'], language='en')['result']
+    return {
+        'location_id': location_id,
+        'img_url': get_photo(response),
+        'title': response['name'],
+        'distance': get_distance(response, location),
+        'bookmarked': True
+    }
 
 """ Fetches locations for an activity with the help of Places API
     params: activity
@@ -137,7 +151,7 @@ def get_locations(activity):
     refined_results = [] #so much wastage, it hurts
     for result in results:
         refined_results.append({
-            "location_id": result['id'],
+            "location_id": result['place_id'],
             "img_url": get_photo(result),
             "title": result['name'],
             "distance": get_distance(result, location),
@@ -151,7 +165,7 @@ def bookmarks():
     user_id = session.get("user_token", None)
     user = firestore.client().collection(u'users').document(user_id)
     bookmarks = user.collection(u'bookmarks')
-    return to_json({k.id: k.to_dict() for k in bookmarks.get()})
+    return to_json([k.to_dict() for k in bookmarks.get()])
 
 @app.after_request
 def after_req(response):
@@ -161,7 +175,6 @@ def after_req(response):
 @app.route("/api/<activity>/<location_id>", methods=['POST'])
 def add_bookmark(activity, location_id):
     user_id = session.get('user_token')
-    print(session)
     firestore.client().collection(u'users').document(user_id)\
         .collection(u'bookmarks').document(location_id).set({
             'location_id': location_id,

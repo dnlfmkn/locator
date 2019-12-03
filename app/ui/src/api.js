@@ -30,6 +30,10 @@ class APIClient {
     return this.perform('delete', `/api/${activity}/${locationId}`);
   }
 
+  async getBookmarkDetails(locationId, locationParams) {
+    return this.perform('get', `/api/bookmarked/${locationId}`, locationParams)
+  }
+
   async signup(params) {
     return this.perform('post', `/api/signup`, params);
   }
