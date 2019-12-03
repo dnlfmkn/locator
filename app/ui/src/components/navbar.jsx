@@ -38,7 +38,6 @@ export default function NavBar(props) {
     flex-direction: row;
     align-items: center;"
   `
-  //console.log(authState.auth)
   return <nav className="navbar">
     <Link
       to="/"
@@ -66,7 +65,6 @@ export default function NavBar(props) {
       id="toggle"
       isDark={themeState.dark}
       onChange={() => themeState.toggle()} />
-      {console.log(authState.auth)}
       {authState.auth ? (
           <Button onClick={() => signout()}>Sign out</Button>
         ) : (
